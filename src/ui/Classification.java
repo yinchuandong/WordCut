@@ -14,25 +14,32 @@ public class Classification {
 	ArrayList<Word> articleList = new ArrayList<Word>();
 	HashMap<String, ArrayList<Word>> modelMapList = new HashMap<String, ArrayList<Word>>();
 	
-	
-	
-	public void classify(ArrayList<Word> articleList){
-		
+	public Classification(){
+		loadClassFromFile();
 	}
 	
-	public void produceCosine(){
+	public void classify(ArrayList<Word> articleList){
 		ArrayList<Integer> vectorA = new ArrayList<Integer>();//样本集
 		ArrayList<Integer> vectorB = new ArrayList<Integer>();//未分类
 		for (Word word : articleList) {
+			vectorB.add(word.num);
 			int index = findWord(word, modelList);
 			if (index != -1) {
+				System.out.println(word.word);
 				vectorA.add(modelList.get(index).num);
-				vectorB.add(word.num);
+			}else{
+				vectorA.add(0);
 			}
 		}
+		double similarity = calCosineSimilarity(vectorA, vectorB);
+		System.out.println(similarity);
 	}
+	
 	public double calCosineSimilarity(ArrayList<Integer> vectorA, ArrayList<Integer> vectorB){
 		int len = vectorA.size();
+		if (len <2) {
+			return 0;
+		}
 		double ab = 0;
 		double aa = 0;
 		double bb = 0;

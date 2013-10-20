@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -107,10 +108,12 @@ public class WordKut {
 	
 	public static void main(String[] args){
 		WordKut model = new WordKut();
-		String content = model.readFile("article/党的十八大2.txt");
-//		System.out.println(content);
+		String content = model.readFile("article/党的十八大1.txt");//这世界需要你
 		model.cutWord(content);
 		model.display();
+		Classification classification = new Classification();
+		classification.classify(model.wordsList);
+		
 	}
 }
 
