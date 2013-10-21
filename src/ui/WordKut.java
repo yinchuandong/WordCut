@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,24 +80,26 @@ public class WordKut {
 				System.out.println("init true");
 			}
 			
-			byte[] nativeBytes = ictclas50.ICTCLAS_ParagraphProcess(content.getBytes("utf-8"), 0, 1);
-			String nativeStr = new String(nativeBytes);
-	//		System.out.println("未加入用户词典"+nativeStr);
-	//		
-	//		String userdict = "userdict.txt";
-	//		int nCount = ictclas50.ICTCLAS_ImportUserDictFile(userdict.getBytes(), 2);
-	//		System.out.println("用户词典数目"+nCount);
-	//		
-	//		byte[] nativeBytes1 = ictclas50.ICTCLAS_ParagraphProcess(word.getBytes(), 0, 1);
-	//		String nativeStr1 = new String(nativeBytes1);
-	//		System.out.println("加入用户词典: " + nativeStr1);
+//			byte[] nativeBytes = ictclas50.ICTCLAS_ParagraphProcess(content.getBytes("utf-8"), 0, 1);
+//			String nativeStr = new String(nativeBytes);
+//			System.out.println("未加入用户词典"+nativeStr);
+			
+			String userdict = "userdict.txt";
+			int nCount = ictclas50.ICTCLAS_ImportUserDictFile(userdict.getBytes(), 2);
+//			System.out.println("用户词典数目"+nCount);
+			
+			byte[] nativeBytes1 = ictclas50.ICTCLAS_ParagraphProcess(content.getBytes("utf-8"), 0, 1);
+			String nativeStr1 = new String(nativeBytes1);
+//			System.out.println("加入用户词典: " + nativeStr1);
 			Pattern pattern = Pattern.compile("( ([^ ])*?)(/n(\\w)*) ");
-			Matcher matcher = pattern.matcher(nativeStr);	
+			Matcher matcher = pattern.matcher(nativeStr1);	
 			
 			while (matcher.find()) {
 				addWord(matcher.group(1).trim());
 //				System.out.println(matcher.group());
 			}
+			Collections.sort(wordsList, new Word());
+			Collections.reverse(wordsList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,11 +113,17 @@ public class WordKut {
 	
 	public static void main(String[] args){
 		WordKut model = new WordKut();
-		String content = model.readFile("article/党的十八大1.txt");//这世界需要你
+		String content = model.readFile("article/党分类模板.txt");//这世界需要你
 		model.cutWord(content);
 		model.display();
-		Classification classification = new Classification();
-		classification.classify(model.wordsList);
+//		Classification classification = new Classification();
+//		classification.loadClassFromDir("Classification");
+//		HashMap<String, Double> resultMap = classification.classify(model.wordsList);
+//		Set<String> keySet = resultMap.keySet();
+//		System.out.println();
+//		for (String key : keySet) {
+//			System.out.println(key + "-->" + resultMap.get(key));
+//		}
 		
 	}
 }
