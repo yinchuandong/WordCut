@@ -113,17 +113,17 @@ public class WordKut {
 	
 	public static void main(String[] args){
 		WordKut model = new WordKut();
-		String content = model.readFile("article/党分类模板.txt");//这世界需要你
+		String content = model.readFile("article/党的十八大2.txt");//这世界需要你
 		model.cutWord(content);
-		model.display();
-//		Classification classification = new Classification();
-//		classification.loadClassFromDir("Classification");
-//		HashMap<String, Double> resultMap = classification.classify(model.wordsList);
-//		Set<String> keySet = resultMap.keySet();
-//		System.out.println();
-//		for (String key : keySet) {
-//			System.out.println(key + "-->" + resultMap.get(key));
-//		}
+//		model.display();
+		Classification classification = new Classification();
+		classification.loadClassFromDir("Classification");
+		HashMap<String, Double> resultMap = classification.classify(model.wordsList);
+		Set<String> keySet = resultMap.keySet();
+		System.out.println();
+		for (String key : keySet) {
+			System.out.println(key + "-->" + resultMap.get(key));
+		}
 		
 	}
 }
